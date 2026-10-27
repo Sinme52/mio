@@ -29,6 +29,7 @@ const { chromium } = require('playwright');
     await page.evaluate((secs) => {
       const app = window.__app, w = app.world;
       w.stones.forEach((s) => { s.read = true; s.shown = true; });
+      for (const id of ['card', 'toast']) document.getElementById(id).style.display = 'none';
       const idle = { ax: 0, ay: 0, held: () => false, pressed: () => false, released: () => false };
       for (let i = 0; i < secs * 60; i++) w.update(1 / 60, idle, innerWidth / innerHeight);
     }, +secs);
