@@ -1,0 +1,25 @@
+{
+  "kind": "draft",
+  "prompt": "A single small silver-blue sardine-like schooling fish in perfect side profile facing right, metallic iridescent scales. Isolated game sprite on a fully transparent background, centered, no shadow. Painterly, cinematic concept-art quality game asset, soft volumetric underwater light, rich but natural colors, high detail, clean edges, no text, no watermark, no border.",
+  "model": "gpt-image-2.5-sunburst",
+  "quality": "medium",
+  "size": "1024x1024",
+  "output_format": "png",
+  "background": "transparent",
+  "created_at": "2026-10-26T23:22:39",
+  "request_id": "req_cbe45821001547c59ea5d75c5b99e257",
+  "elapsed_sec": 15.9,
+  "usage": {
+    "input_tokens": 80,
+    "input_tokens_details": {
+      "image_tokens": 0,
+      "text_tokens": 80
+    },
+    "output_tokens": 439,
+    "output_tokens_details": {
+      "image_tokens": 439,
+      "text_tokens": 0
+    },
+    "total_tokens": 519
+  }
+}

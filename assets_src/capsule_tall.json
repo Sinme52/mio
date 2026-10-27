@@ -1,0 +1,25 @@
+{
+  "kind": "draft",
+  "prompt": "Vertical cinematic video game poster art: a young dolphin with a faint aquamarine luminous marking rising toward a shimmering sunlit ocean surface, god rays, translucent turquoise water, below it the depths darken into a sunken temple and a colossal shadowy eel-like leviathan with violet glowing cores far beneath. Keep the top quarter calm for a logo. Painterly, highly detailed. Painterly, cinematic concept-art quality game asset, soft volumetric underwater light, rich but natural colors, high detail, clean edges, no text, no watermark, no border.",
+  "model": "gpt-image-2.5-sunburst",
+  "quality": "medium",
+  "size": "1024x1536",
+  "output_format": "png",
+  "background": "opaque",
+  "created_at": "2026-10-26T23:23:26",
+  "request_id": "req_e5e947f65df24e63a03f2262580b6dba",
+  "elapsed_sec": 17.4,
+  "usage": {
+    "input_tokens": 118,
+    "input_tokens_details": {
+      "image_tokens": 0,
+      "text_tokens": 118
+    },
+    "output_tokens": 343,
+    "output_tokens_details": {
+      "image_tokens": 343,
+      "text_tokens": 0
+    },
+    "total_tokens": 461
+  }
+}

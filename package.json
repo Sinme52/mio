@@ -1,0 +1,55 @@
+{
+  "name": "mio-hymn-of-the-blue",
+  "productName": "MIO - Hymn of the Blue",
+  "version": "0.1.0",
+  "description": "A side-scrolling underwater adventure of a young dolphin.",
+  "author": "MIO Project",
+  "main": "electron/main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "serve": "node tools/serve.js",
+    "dist:win": "electron-builder --win --x64",
+    "dist:linux": "electron-builder --linux --x64",
+    "dist:mac": "electron-builder --mac"
+  },
+  "devDependencies": {
+    "electron": "33.2.1",
+    "electron-builder": "25.1.8"
+  },
+  "dependencies": {
+    "@fontsource/cormorant-garamond": "5.1.0",
+    "@fontsource/zen-maru-gothic": "5.1.0"
+  },
+  "optionalDependencies": {
+    "steamworks.js": "0.4.0"
+  },
+  "build": {
+    "appId": "com.example.mio",
+    "productName": "MIO - Hymn of the Blue",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "electron/**",
+      "web/**",
+      "!web/package.json",
+      "node_modules/steamworks.js/**"
+    ],
+    "asarUnpack": [
+      "node_modules/steamworks.js/**"
+    ],
+    "win": {
+      "target": "dir",
+      "signAndEditExecutable": false
+    },
+    "linux": {
+      "target": "dir",
+      "executableName": "mio"
+    },
+    "mac": {
+      "target": "dir"
+    },
+    "icon": "build/icon.png"
+  }
+}

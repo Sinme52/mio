@@ -1,0 +1,25 @@
+{
+  "kind": "draft",
+  "prompt": "Breathtaking cinematic key art for a video game: a young dolphin with a faint aquamarine luminous marking swims gracefully through crystal-clear turquoise water, shafts of sunlight piercing down from the rippling surface, translucent layered depths with coral reef silhouettes, a distant ancient whale and sunken temple ruins fading into blue haze, drifting particles and bubbles, sense of wonder and solitude. Leave the left third of the composition calmer for a title. Painterly, highly detailed. Painterly, cinematic concept-art quality game asset, soft volumetric underwater light, rich but natural colors, high detail, clean edges, no text, no watermark, no border.",
+  "model": "gpt-image-2.5-sunburst",
+  "quality": "medium",
+  "size": "1920x1088",
+  "output_format": "png",
+  "background": "opaque",
+  "created_at": "2026-10-26T23:23:23",
+  "request_id": "req_bbc31b5b8923472eb0d9655a5bb191c5",
+  "elapsed_sec": 14.3,
+  "usage": {
+    "input_tokens": 134,
+    "input_tokens_details": {
+      "image_tokens": 0,
+      "text_tokens": 134
+    },
+    "output_tokens": 344,
+    "output_tokens_details": {
+      "image_tokens": 344,
+      "text_tokens": 0
+    },
+    "total_tokens": 478
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "draft",
+  "prompt": "A bright tropical sky seen from just above the ocean surface: soft blue gradient, towering luminous cumulus clouds near the horizon, warm sun glow at the upper left, flat calm sea horizon line at the very bottom edge. Painterly, serene. Painterly, cinematic concept-art quality game asset, soft volumetric underwater light, rich but natural colors, high detail, clean edges, no text, no watermark, no border.",
+  "model": "gpt-image-2.5-sunburst",
+  "quality": "medium",
+  "size": "1536x1024",
+  "output_format": "png",
+  "background": "opaque",
+  "created_at": "2026-10-26T23:23:20",
+  "request_id": "req_478cb049d7da4b41982bc6460098c9d7",
+  "elapsed_sec": 12.5,
+  "usage": {
+    "input_tokens": 91,
+    "input_tokens_details": {
+      "image_tokens": 0,
+      "text_tokens": 91
+    },
+    "output_tokens": 343,
+    "output_tokens_details": {
+      "image_tokens": 343,
+      "text_tokens": 0
+    },
+    "total_tokens": 434
+  }
+}

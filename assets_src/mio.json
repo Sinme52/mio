@@ -1,0 +1,25 @@
+{
+  "kind": "draft",
+  "prompt": "A young bottlenose dolphin seen in perfect side profile, facing right, body perfectly straight and horizontal from beak to tail flukes, dorsal fin and pectoral fin visible, sleek glossy skin with a soft slate-blue to pale grey gradient and a cream belly, a delicate faint aquamarine luminous swirl marking along its flank, gentle intelligent eye. Isolated game sprite on a fully transparent background, no water, no bubbles, no shadow, whole body centered with generous margin. Painterly, cinematic concept-art quality game asset, soft volumetric underwater light, rich but natural colors, high detail, clean edges, no text, no watermark, no border.",
+  "model": "gpt-image-2.5-sunburst",
+  "quality": "medium",
+  "size": "1536x1024",
+  "output_format": "png",
+  "background": "transparent",
+  "created_at": "2026-10-26T23:22:37",
+  "request_id": "req_d7b60e702d0444a99298d10594337d11",
+  "elapsed_sec": 13.5,
+  "usage": {
+    "input_tokens": 140,
+    "input_tokens_details": {
+      "image_tokens": 0,
+      "text_tokens": 140
+    },
+    "output_tokens": 343,
+    "output_tokens_details": {
+      "image_tokens": 343,
+      "text_tokens": 0
+    },
+    "total_tokens": 483
+  }
+}

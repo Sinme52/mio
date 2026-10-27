@@ -1,0 +1,25 @@
+{
+  "kind": "draft",
+  "prompt": "Ultra-wide cinematic panorama for a video game library banner: a translucent turquoise ocean seen from the side, sunbeams from the rippling surface, a young dolphin small in the center-right swimming, coral reef on the left, a kelp forest, sunken temple ruins and a darkening abyss toward the right with faint violet glows. No text. Painterly, highly detailed. Painterly, cinematic concept-art quality game asset, soft volumetric underwater light, rich but natural colors, high detail, clean edges, no text, no watermark, no border.",
+  "model": "gpt-image-2.5-sunburst",
+  "quality": "medium",
+  "size": "3072x1024",
+  "output_format": "png",
+  "background": "opaque",
+  "created_at": "2026-10-26T23:23:34",
+  "request_id": "req_068c3b978389472aa55d395b156dd68f",
+  "elapsed_sec": 15.8,
+  "usage": {
+    "input_tokens": 119,
+    "input_tokens_details": {
+      "image_tokens": 0,
+      "text_tokens": 119
+    },
+    "output_tokens": 247,
+    "output_tokens_details": {
+      "image_tokens": 247,
+      "text_tokens": 0
+    },
+    "total_tokens": 366
+  }
+}

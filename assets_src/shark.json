@@ -1,0 +1,25 @@
+{
+  "kind": "draft",
+  "prompt": "A sleek grey reef shark seen in perfect side profile, facing right, body perfectly straight and horizontal from snout to tail, menacing but realistic, dark grey back fading to white belly, sharp dorsal fin. Isolated game sprite on a fully transparent background, no water, no shadow, whole body centered with margin. Painterly, cinematic concept-art quality game asset, soft volumetric underwater light, rich but natural colors, high detail, clean edges, no text, no watermark, no border.",
+  "model": "gpt-image-2.5-sunburst",
+  "quality": "medium",
+  "size": "1536x1024",
+  "output_format": "png",
+  "background": "transparent",
+  "created_at": "2026-10-26T23:22:37",
+  "request_id": "req_9143fdca59994681a2fc96f01974246f",
+  "elapsed_sec": 13.8,
+  "usage": {
+    "input_tokens": 106,
+    "input_tokens_details": {
+      "image_tokens": 0,
+      "text_tokens": 106
+    },
+    "output_tokens": 343,
+    "output_tokens_details": {
+      "image_tokens": 343,
+      "text_tokens": 0
+    },
+    "total_tokens": 449
+  }
+}

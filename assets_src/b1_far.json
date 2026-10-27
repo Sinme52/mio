@@ -1,0 +1,25 @@
+{
+  "kind": "draft",
+  "prompt": "Wide panoramic underwater background layer: distant coral reef ridges and rock mounds as soft hazy silhouettes along the bottom third of the image, bathed in turquoise atmospheric haze, subtle sunlight from above, painterly. The upper part of the image is fully transparent. Seamless-feeling horizontal composition with no focal object. Painterly, cinematic concept-art quality game asset, soft volumetric underwater light, rich but natural colors, high detail, clean edges, no text, no watermark, no border.",
+  "model": "gpt-image-2.5-sunburst",
+  "quality": "medium",
+  "size": "2400x800",
+  "output_format": "png",
+  "background": "transparent",
+  "created_at": "2026-10-26T23:22:52",
+  "request_id": "req_7537ae850a1d43e29752a3a2d9169f42",
+  "elapsed_sec": 12.7,
+  "usage": {
+    "input_tokens": 106,
+    "input_tokens_details": {
+      "image_tokens": 0,
+      "text_tokens": 106
+    },
+    "output_tokens": 189,
+    "output_tokens_details": {
+      "image_tokens": 189,
+      "text_tokens": 0
+    },
+    "total_tokens": 295
+  }
+}

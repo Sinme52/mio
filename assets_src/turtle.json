@@ -1,0 +1,25 @@
+{
+  "kind": "draft",
+  "prompt": "A green sea turtle swimming, seen from the side facing right, flippers spread, calm and graceful. Isolated on a fully transparent background, no water, no shadow, centered with margin. Painterly, cinematic concept-art quality game asset, soft volumetric underwater light, rich but natural colors, high detail, clean edges, no text, no watermark, no border.",
+  "model": "gpt-image-2.5-sunburst",
+  "quality": "medium",
+  "size": "1536x1024",
+  "output_format": "png",
+  "background": "transparent",
+  "created_at": "2026-10-26T23:22:51",
+  "request_id": "req_7bf5bdc638a54dccb44289bdb6de24ab",
+  "elapsed_sec": 14.1,
+  "usage": {
+    "input_tokens": 81,
+    "input_tokens_details": {
+      "image_tokens": 0,
+      "text_tokens": 81
+    },
+    "output_tokens": 343,
+    "output_tokens_details": {
+      "image_tokens": 343,
+      "text_tokens": 0
+    },
+    "total_tokens": 424
+  }
+}

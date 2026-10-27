@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'">
+<title>MIO - Hymn of the Blue</title>
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<canvas id="gl"></canvas>
+
+<div id="hud" class="hidden">
+  <div id="vitals">
+    <div id="health"></div>
+    <div id="air"><div id="airfill"></div><span class="airlabel">AIR</span></div>
+  </div>
+  <div id="counters"><div id="podc"></div><div id="pearlc"></div></div>
+  <div id="bossbar" class="hidden"><div id="bossname"></div><div id="bosscores"></div></div>
+  <div id="charge"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" /></svg></div>
+</div>
+
+<div id="toast"></div>
+<div id="card" class="hidden"><div class="card-line"></div><div class="card-title"></div><div class="card-line"></div></div>
+<div id="dialog" class="hidden"><div class="dialog-glyph"></div><div id="dialogtext"></div><div id="dialoghint"></div></div>
+<div id="screen" class="hidden"></div>
+<div id="fade"></div>
+<div id="loading"><div class="loading-title">MIO</div><div class="loading-bar"><div id="loadfill"></div></div><div id="loadtext"></div></div>
+
+<script type="module" src="src/main.js"></script>
+</body>
+</html>
