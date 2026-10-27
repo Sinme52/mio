@@ -263,7 +263,8 @@ export class Drawer {
       if (!this.inView(s.x, s.y, 300)) continue;
       const fade = s.hp <= 0 ? Math.max(0, 1 - s.gone / 3) : 1;
       const hit = s.stun > 0 ? 0.5 + 0.5 * Math.sin(w.time * 40) : 1;
-      body(b, I.shark, { x: s.x, y: s.y, angle: s.angle, flip: Math.sign(s.flip) || 1, lenScale: Math.max(0.22, Math.abs(s.flip)), len: s.len, phase: s.phase, amp: 7, col: [hit, hit, hit, fade], pivot: 0.45 });
+      const pose = s.turnPose();
+      body(b, I.shark, { x: s.x, y: s.y, angle: s.angle, flip: s.facing, lenScale: pose.len, thick: 1 + pose.curl * 0.15, bend: -pose.curl * 0.35, len: s.len, phase: s.phase, amp: 7, col: [hit, hit, hit, fade], pivot: 0.45 });
     }
 
     if (w.boss) this.boss(b, w.boss);

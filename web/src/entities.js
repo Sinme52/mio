@@ -155,20 +155,50 @@ export class Jelly {
 }
 
 // ---------------------------------------------------------------- sharks
+// Sharks are poor at climbing or diving: they keep within 20 degrees of horizontal and turn around
+// with a slow sideways sweep instead of looping up or down.
+const SHARK_PITCH = (20 * Math.PI) / 180;
+const SHARK_PITCH_RATE = 0.9;
+const SHARK_REVERSE_TIME = 0.7;
+
 export class Shark {
   constructor(s) {
     this.x = s.x; this.y = s.y; this.home = [s.x, s.y]; this.range = s.range;
-    this.vx = 120; this.vy = 0; this.angle = 0; this.flip = 1; this.flipTarget = 1;
+    this.vx = 120; this.vy = 0;
+    this.facing = 1; this.elev = 0; this.angle = 0; this.flip = 1; this.turnT = -1;
     this.hp = 3; this.stun = 0; this.cool = 0; this.state = 'patrol'; this.phase = 0; this.dir = 1; this.gone = 0;
     this.len = 230;
+  }
+
+  headingAngle() { return this.facing > 0 ? this.elev : Math.PI - this.elev; }
+
+  turnPose() {
+    if (this.turnT < 0) return { len: 1, curl: 0 };
+    return { len: Math.max(0.22, Math.abs(Math.cos(this.turnT * Math.PI))), curl: Math.sin(this.turnT * Math.PI) };
+  }
+
+  // Steer toward the direction (tx, ty) within the shark's limits. A reversal only starts once the
+  // target is more than minTurn units behind, so prey right above or below does not cause dithering.
+  steer(tx, ty, dt, minTurn = 1e-3) {
+    if (Math.abs(tx) > minTurn && Math.sign(tx) !== this.facing && this.turnT < 0) this.turnT = 0;
+    if (this.turnT >= 0) {
+      const before = this.turnT;
+      this.turnT += dt / SHARK_REVERSE_TIME;
+      if (before < 0.5 && this.turnT >= 0.5) this.facing = -this.facing;
+      if (this.turnT >= 1) this.turnT = -1;
+    }
+    const want = clamp(Math.atan2(ty, Math.max(Math.abs(tx), 1e-3)), -SHARK_PITCH, SHARK_PITCH);
+    this.elev += clamp(want - this.elev, -SHARK_PITCH_RATE * dt, SHARK_PITCH_RATE * dt);
+    this.angle = this.headingAngle();
+    this.flip = this.facing;
   }
 
   update(dt, world) {
     if (this.hp <= 0) {
       this.gone += dt;
-      this.vx = damp(this.vx, this.dir * 380, 2, dt); this.vy = damp(this.vy, 120, 1, dt);
+      this.steer(this.dir, 0.35, dt);
+      this.vx = damp(this.vx, Math.cos(this.angle) * 380, 2, dt); this.vy = damp(this.vy, Math.sin(this.angle) * 380, 1, dt);
       this.x += this.vx * dt; this.y += this.vy * dt;
-      this.angle = Math.atan2(this.vy, this.vx);
       return;
     }
     const pl = world.player;
@@ -179,8 +209,9 @@ export class Shark {
     let tx, ty, speed;
     const homeD = Math.hypot(this.x - this.home[0], this.y - this.home[1]);
     if (this.stun > 0) {
-      tx = this.vx; ty = this.vy; speed = 40;
-    } else if (this.cool <= 0 && d < 420 && !pl.airborne && pl.y > surf + 30 && homeD < this.range * 2.2) {
+      tx = this.facing; ty = 0; speed = 40;
+    } else if (this.cool <= 0 && d < (this.state === 'chase' ? 620 : 420) && !pl.airborne && pl.y > surf + 30 && homeD < this.range * 2.2) {
+      // Notices prey within 420 units, and keeps after it out to 620 while it sweeps around.
       this.state = 'chase'; tx = dx; ty = dy; speed = 265;
     } else {
       if (this.state === 'chase') world.events.emit('sharkGiveUp', this);
@@ -189,19 +220,17 @@ export class Shark {
       tx = this.dir; ty = (this.home[1] - this.y) * 0.01 + Math.sin(world.time * 0.7) * 0.2; speed = this.cool > 0 ? 300 : 130;
       if (this.cool > 0) { tx = -dx; ty = -dy; }
     }
-    const want = Math.atan2(ty, tx);
-    this.angle += clamp(angDiff(this.angle, want), -2.4 * dt, 2.4 * dt);
+    this.steer(tx, ty, dt, this.state === 'chase' ? 90 : 1e-3);
+    // Turning around costs speed: the shark sweeps wide and slows through the middle of the turn.
+    if (this.turnT >= 0) speed *= Math.max(0.25, Math.abs(Math.cos(this.turnT * Math.PI)));
     this.vx = damp(this.vx, Math.cos(this.angle) * speed, 2, dt);
     this.vy = damp(this.vy, Math.sin(this.angle) * speed, 2, dt);
     this.x += this.vx * dt; this.y += this.vy * dt;
     if (this.y < surf + 40) { this.y = surf + 40; this.vy = Math.abs(this.vy); }
     const hit = world.terrain.collide(this, 30, 0.2);
-    if (hit && this.state === 'patrol') this.dir = -this.dir;
+    if (hit && this.state === 'patrol' && hit[0] * this.facing < -0.5) this.dir = -this.facing;
     world.collideGates(this, 30);
     this.phase += dt * (4 + Math.hypot(this.vx, this.vy) * 0.02);
-    const c = Math.cos(this.angle);
-    if (c > 0.25) this.flipTarget = 1; else if (c < -0.25) this.flipTarget = -1;
-    this.flip = damp(this.flip, this.flipTarget, 6, dt);
 
     // Contact: Mio's charge hurts the shark, otherwise the shark bites.
     const hx = this.x + Math.cos(this.angle) * 70, hy = this.y + Math.sin(this.angle) * 70;
