@@ -76,7 +76,6 @@ Steam はストア申請時の「コンテンツ調査」で、AI で生成し�
 ## 6. ビルドしてアップロードする
 
 ```bash
-cd game
 npm install
 npm run dist:win      # → dist/win-unpacked/
 npm run dist:linux    # → dist/linux-unpacked/
@@ -84,7 +83,7 @@ npm run dist:linux    # → dist/linux-unpacked/
 
 1. Steamworks SDK をダウンロードし、`tools/ContentBuilder/` の SteamCMD を使います。
 2. `steam/*.vdf` の ID を差し替え、ContentBuilder から
-   `steamcmd +login <ビルド用アカウント> +run_app_build <このリポジトリ>/game/steam/app_build.vdf +quit`
+   `steamcmd +login <ビルド用アカウント> +run_app_build <このリポジトリ>/steam/app_build.vdf +quit`
 3. Steamworks の「ビルド」画面で、アップロードしたビルドを `default` ブランチに設定。
 4. 「インストール」→「一般」で起動オプションを設定:
    - Windows: 実行ファイル `MIO - Hymn of the Blue.exe`

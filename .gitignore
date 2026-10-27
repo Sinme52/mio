@@ -1,0 +1,8 @@
+node_modules/
+dist/
+__pycache__/
+# 生成画像の元PNGは大きいので管理しない（WebP版とプロンプト記録の .json を管理）
+assets_src/*.png
+assets_release/
+store/screenshots/*.png
+steam/output/

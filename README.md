@@ -50,7 +50,6 @@
 ## 動かし方
 
 ```bash
-cd game
 npm install
 npm start               # Electron 版（Steam で配る形）
 npm run serve           # ブラウザ版: http://localhost:8080/
@@ -67,26 +66,25 @@ npm run dist:linux      # dist/linux-unpacked/（Steam Deck のネイティブ�
 ## フォルダ構成
 
 ```
-game/
-  web/                 ゲーム本体（index.html と ES モジュール。ビルド工程なし）
-    src/renderer.js    描画パイプライン（多重スクロール・光源バッファ・ポストエフェクト）
-    src/shaders.js     GLSL（水・空・層・光の柱・岩・ゆらぎ・ブルーム・合成）
-    src/terrain.js     地形の密度場と距離場（当たり判定・到達判定）
-    src/levels.js      4章のレイアウト・配色・層の設定
-    src/game.js        ステージの進行（声の波紋・門・仲間・出口・カメラ）
-    src/player.js      澪の泳ぎ・跳躍・息・声・ダッシュ
-    src/entities.js    魚群・クラゲ・鮫・仲間・パーティクル
-    src/boss.js        ボス〈静寂〉
-    src/draw.js        スプライトの曲げ描画（1枚絵を背骨に沿って曲げて泳がせる）
-    src/audio.js       音楽・環境音・効果音の合成
-    src/ui.js, main.js HUD・メニュー・章の流れ・セーブ
-    assets/img/        ゲーム用に加工した画像（WebP）
-    fonts/             Zen Maru Gothic / Cormorant Garamond（SIL OFL）
-  electron/            Steam 用デスクトップ版（Steamworks の実績・オーバーレイ）
-  assets_src/          生成画像の元データ（WebP）とプロンプト記録（.json）
-  store/               Steam ストア用画像（各カプセル・ヒーロー・ロゴ・アイコン・スクリーンショット）
-  steam/               SteamPipe のアップロード設定（App ID / Depot ID は要差し替え）
-  tools/               画像生成・加工、検証スクリプト
+web/                 ゲーム本体（index.html と ES モジュール。ビルド工程なし）
+  src/renderer.js    描画パイプライン（多重スクロール・光源バッファ・ポストエフェクト）
+  src/shaders.js     GLSL（水・空・層・光の柱・岩・ゆらぎ・ブルーム・合成）
+  src/terrain.js     地形の密度場と距離場（当たり判定・到達判定）
+  src/levels.js      4章のレイアウト・配色・層の設定
+  src/game.js        ステージの進行（声の波紋・門・仲間・出口・カメラ）
+  src/player.js      澪の泳ぎ・跳躍・息・声・ダッシュ
+  src/entities.js    魚群・クラゲ・鮫・仲間・パーティクル
+  src/boss.js        ボス〈静寂〉
+  src/draw.js        スプライトの曲げ描画（1枚絵を背骨に沿って曲げて泳がせる）
+  src/audio.js       音楽・環境音・効果音の合成
+  src/ui.js, main.js HUD・メニュー・章の流れ・セーブ
+  assets/img/        ゲーム用に加工した画像（WebP）
+  fonts/             Zen Maru Gothic / Cormorant Garamond（SIL OFL）
+electron/            Steam 用デスクトップ版（Steamworks の実績・オーバーレイ）
+assets_src/          生成画像の元データ（WebP）とプロンプト記録（.json）
+store/               Steam ストア用画像（各カプセル・ヒーロー・ロゴ・アイコン・スクリーンショット）
+steam/               SteamPipe のアップロード設定（App ID / Depot ID は要差し替え）
+tools/               画像生成・加工、検証スクリプト
 ```
 
 ## 画像の作り方（GPT Image 2.5）
