@@ -24,7 +24,15 @@ const { chromium } = require('playwright');
       const [x, y] = pos.split(',').map(Number);
       await page.evaluate(([x, y]) => { const w = window.__app.world; w.player.x = x; w.player.y = y; w.cam.x = x; w.cam.y = y; }, [x, y]);
     }
-    await page.waitForTimeout(+secs * 1000);
+    // Fast-forward the simulation (rendering is too slow in software GL for time to pass on its own),
+    // and keep song-stone dialogs out of the picture.
+    await page.evaluate((secs) => {
+      const app = window.__app, w = app.world;
+      w.stones.forEach((s) => { s.read = true; s.shown = true; });
+      const idle = { ax: 0, ay: 0, held: () => false, pressed: () => false, released: () => false };
+      for (let i = 0; i < secs * 60; i++) w.update(1 / 60, idle, innerWidth / innerHeight);
+    }, +secs);
+    await page.waitForTimeout(3000);
     await page.screenshot({ path: `${out}/${name}.png`, timeout: 180000 });
     const fps = await page.evaluate(() => new Promise((r) => { let n = 0; const t0 = performance.now(); const f = () => { n++; if (performance.now() - t0 < 1000) requestAnimationFrame(f); else r(n); }; requestAnimationFrame(f); }));
     console.log(`${name}: ~${fps} fps (software GL)`);
