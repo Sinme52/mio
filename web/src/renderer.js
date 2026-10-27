@@ -198,7 +198,7 @@ export class Renderer {
 
     G.bindTarget(gl, T.scene);
     gl.disable(gl.BLEND);
-    G.use(gl, this.p.bg, { ...common, uSky: this.images.sky, uSkySize: [2000, 900], uSkyTint: pal.sky,
+    G.use(gl, this.p.bg, { ...common, uSky: this.images.sky, uSkySize: [2000, 900], uSeaBand: view.seaBand, uSkyTint: pal.sky,
       uSunDir: [pal.sun[0] * view.cam[2], 0, pal.sun[1]] });
     this.fullscreen();
 

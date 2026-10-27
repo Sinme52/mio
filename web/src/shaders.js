@@ -83,6 +83,7 @@ in vec2 vUV;
 out vec4 o;
 uniform sampler2D uSky;
 uniform vec2 uSkySize;      // world size the sky image covers
+uniform float uSeaBand;     // height of the distant sea between the waterline and the horizon (shrinks as Mio dives)
 uniform vec3 uSkyTint;
 uniform vec3 uSunDir;       // x position of sun glow relative to the camera (world units), strength
 void main() {
@@ -92,7 +93,12 @@ void main() {
     // Measured from the still water level, not the animated waves, so the distant view stays steady.
     float h = -w.y;
     float u = 0.5 + (w.x - uCam.x) / uSkySize.x + uCam.x * 0.00003;
-    float v = 0.9 - h / uSkySize.y;
+    // Rows of the sky painting: its horizon, and the near sea at the bottom. The sea between them is
+    // squeezed into uSeaBand; above that the sky continues at its normal scale.
+    const float HORIZON_V = 0.826;
+    const float NEAR_SEA_V = 0.98;
+    float v = h < uSeaBand ? mix(NEAR_SEA_V, HORIZON_V, h / max(uSeaBand, 1e-3))
+                           : HORIZON_V - (h - uSeaBand) / uSkySize.y;
     vec3 sky = texture(uSky, vec2(u, max(v, 0.0))).rgb;
     // Above the top of the painting (very high leaps), fade into its average zenith colour.
     vec3 zenith = textureLod(uSky, vec2(0.5, 0.02), 8.0).rgb;

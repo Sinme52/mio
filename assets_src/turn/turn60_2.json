@@ -1,24 +1,27 @@
 {
-  "kind": "turn-frame",
+  "kind": "release",
+  "mode": "edit",
+  "source_image": "assets_src/turn/turn60_2.png",
   "prompt": "The same young bottlenose dolphin character as in the reference image: identical slate-blue to pale grey glossy skin, cream belly, the delicate aquamarine luminous swirl marking on its flank, same proportions, same painterly game-sprite rendering and soft top lighting. It is turning toward the viewer: a three-quarter front view rotated about 60 degrees around its vertical axis, head toward the camera and slightly to the right, body strongly foreshortened behind the head, both pectoral fins visible, tail flukes partly visible behind the body. Body level and horizontal, dorsal fin pointing straight up. Isolated game sprite on a fully transparent background, no water, no bubbles, no shadow, whole body visible with generous margin.",
-  "reference": "assets_src/mio.webp",
   "model": "gpt-image-2.5-sunburst",
-  "quality": "medium",
+  "quality": "xhigh",
   "size": "1024x1024",
+  "output_format": "png",
   "background": "transparent",
-  "request_id": "req_4b01396110204f1db82eba04ca6a4256",
-  "elapsed_sec": 23.7,
+  "created_at": "2026-10-27T13:21:36",
+  "request_id": "req_d1e41890afdb470cbc8e1dc2ec34e4b8",
+  "elapsed_sec": 58.4,
   "usage": {
-    "input_tokens": 3402,
+    "input_tokens": 1248,
     "input_tokens_details": {
-      "image_tokens": 3072,
-      "text_tokens": 330
+      "image_tokens": 1024,
+      "text_tokens": 224
     },
-    "output_tokens": 878,
+    "output_tokens": 3122,
     "output_tokens_details": {
-      "image_tokens": 878,
+      "image_tokens": 3122,
       "text_tokens": 0
     },
-    "total_tokens": 4280
+    "total_tokens": 4370
   }
 }

@@ -3,6 +3,8 @@
 
 Uses the side-view sprite as a reference image (images/edits) so the character stays the same.
 Usage: python3 tools/gen_turn_frames.py [name ...]   -> assets_src/turn/<name>_<n>.png (+ .json)
+       python3 tools/gen_turn_frames.py --export       -> trims the chosen candidates (PICK) into web/assets/img/
+To finish at release quality, run the skill's `release` on the chosen PNGs and copy the results over them.
 """
 import importlib.util, json, sys
 from concurrent.futures import ThreadPoolExecutor
@@ -32,6 +34,24 @@ FRAMES = {
               "the body and tail hidden behind the head."),
 }
 
+# Candidates used in the game (name -> file stem in assets_src/turn/).
+PICK = {"mio_turn30": "turn30_2", "mio_turn60": "turn60_2", "mio_front": "front_1"}
+
+def export():
+    from PIL import Image
+    out = ROOT / "web" / "assets" / "img"
+    for png in sorted(OUT.glob("*.png")):
+        Image.open(png).save(png.with_suffix(".webp"), quality=95, method=6)
+    for dst, stem in PICK.items():
+        im = Image.open(OUT / f"{stem}.png").convert("RGBA")
+        a = im.split()[-1].point(lambda v: 255 if v > 10 else 0)
+        l, t, r, b = a.getbbox()
+        im = im.crop((max(l - 6, 0), max(t - 6, 0), min(r + 6, im.width), min(b + 6, im.height)))
+        if im.width > 768:
+            im = im.resize((768, round(im.height * 768 / im.width)), Image.LANCZOS)
+        im.save(out / f"{dst}.webp", quality=90, method=6)
+        print(dst, stem, im.size)
+
 def make(name):
     size, pose = FRAMES[name]
     prompt = CHARACTER + pose + TAIL
@@ -53,6 +73,9 @@ def make(name):
     return True
 
 if __name__ == "__main__":
+    if "--export" in sys.argv:
+        export()
+        sys.exit()
     names = sys.argv[1:] or list(FRAMES)
     OUT.mkdir(parents=True, exist_ok=True)
     with ThreadPoolExecutor(max_workers=3) as ex:

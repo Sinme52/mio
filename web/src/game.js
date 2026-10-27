@@ -3,7 +3,10 @@ import { Terrain } from './terrain.js';
 import { Player, P } from './player.js';
 import { FishSchool, Jelly, Shark, Follower, Particles, rand } from './entities.js';
 import { Boss } from './boss.js';
-import { clamp, damp, surfaceY, TAU } from './util.js';
+import { clamp, damp, smoothstep, surfaceY, TAU } from './util.js';
+
+const SEA_BAND = 110;        // world units of distant sea seen above the waterline near the surface
+const SEA_BAND_DEPTH = 400;  // depth at which it has shrunk to nothing
 
 class Emitter {
   constructor() { this.fns = []; }
@@ -43,6 +46,7 @@ export class World {
     this.stats = { pearls: 0, pods: 0, hurt: 0, eaten: 0 };
     this.flash = 0;
     this.slow = 0;
+    this.seaBand = this.seaBandFor(this.player);
     this.restore(progress);
   }
 
@@ -176,7 +180,15 @@ export class World {
     this.flash = Math.max(0, this.flash - dt * 2);
   }
 
+  // How much distant sea shows above the waterline: full near the surface (and in the air),
+  // shrinking to just the waterline once Mio is SEA_BAND_DEPTH below it.
+  seaBandFor(pl) {
+    const depth = pl.airborne ? 0 : Math.max(0, pl.y - surfaceY(pl.x, this.time));
+    return SEA_BAND * (1 - smoothstep(0, SEA_BAND_DEPTH, depth));
+  }
+
   updateCamera(dt, aspect) {
+    this.seaBand = damp(this.seaBand, this.seaBandFor(this.player), 3, dt);
     const pl = this.player, c = this.cam;
     const look = pl.airborne ? 0.15 : 0.32;
     // High leaps pull the view back a little so the whole arc stays readable.

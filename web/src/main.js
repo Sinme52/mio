@@ -396,7 +396,7 @@ class App {
       const W = this.world;
       const view = {
         cam: W.camView(this.save.settings.shake), time: W.time, rings: W.rings, creatures: W.creatures,
-        flash: W.flash * 0.6, fade: 0,
+        flash: W.flash * 0.6, fade: 0, seaBand: W.seaBand,
         settings: { bloom: 0.55, wobble: 1, rays: 1 },
       };
       this.renderer.render(view, this.drawer.bind(W));
