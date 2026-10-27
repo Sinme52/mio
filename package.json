@@ -14,8 +14,8 @@
     "dist:mac": "electron-builder --mac"
   },
   "devDependencies": {
-    "electron": "33.2.1",
-    "electron-builder": "25.1.8"
+    "electron": "44.9.3",
+    "electron-builder": "26.17.0"
   },
   "dependencies": {
     "@fontsource/cormorant-garamond": "5.1.0",
@@ -51,5 +51,8 @@
       "target": "dir"
     },
     "icon": "build/icon.png"
+  },
+  "overrides": {
+    "global-agent": "^4.1.6"
   }
 }

@@ -68,7 +68,7 @@ app.whenReady().then(() => {
   ipcMain.on('quit', () => app.quit());
   // Automated check: MIO_SMOKE=<file.png> boots, waits, saves a screenshot and exits.
   if (process.env.MIO_SMOKE) {
-    win.webContents.on('console-message', (_e, level, msg) => console.log('[page]', msg));
+    win.webContents.on('console-message', (e) => console.log('[page]', e.message));
     setTimeout(async () => {
       const img = await win.webContents.capturePage();
       fs.writeFileSync(process.env.MIO_SMOKE, img.toPNG());
