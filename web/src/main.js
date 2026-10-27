@@ -245,8 +245,8 @@ class App {
       case 'song': A.sfx('song'); this.achieve('ACH_FIRST_SONG'); break;
       case 'charge': A.sfx('charge', d); break;
       case 'dash': A.sfx('dash'); break;
-      case 'leap': A.sfx('splash', 0.7); A.setUnderwater(false); this.achieve('ACH_FIRST_LEAP'); break;
-      case 'splash': A.sfx('splash', d.k); A.setUnderwater(true); break;
+      case 'leap': A.sfx('splash', Math.max(0.35, Math.min(2, d.k * 0.8))); A.setUnderwater(false); this.achieve('ACH_FIRST_LEAP'); break;
+      case 'splash': A.sfx('splash', Math.max(0.35, Math.min(2, d.k))); A.setUnderwater(true); break;
       case 'trick': A.sfx('dash'); break;
       case 'breath': A.sfx('breath'); break;
       case 'hurt': A.sfx('hurt'); break;

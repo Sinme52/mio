@@ -3,15 +3,17 @@ import { surfaceY, TAU, clamp } from './util.js';
 import { BOSS_LEN } from './boss.js';
 
 // Bend a side-view sprite (head at the right edge of the image) along a swimming spine.
-// o: x, y, angle, flip (1 = belly down when facing right, -1 mirrored), len, phase, amp, bend, col, segs, pivot
+// o: x, y, angle, flip (1 = belly down when facing right, -1 mirrored), len, phase, amp, bend, col, segs, pivot,
+//    lenScale (foreshortening while turning towards/away from the camera), thick (height multiplier)
 function body(b, img, o) {
-  const len = o.len, h = len * (img.h / img.w);
+  const len = o.len, h = len * (img.h / img.w) * (o.thick ?? 1);
+  const ls = o.lenScale ?? 1;
   const segs = o.segs ?? 14, pivot = o.pivot ?? 0.5;
   const c = Math.cos(o.angle), s = Math.sin(o.angle);
   const spine = [];
   for (let i = 0; i <= segs; i++) {
     const u = i / segs;
-    const lx = (u - pivot) * len;
+    const lx = (u - pivot) * len * ls;
     const tail = 1 - u;
     const wave = o.amp * (tail * tail) * Math.sin(o.phase - tail * 3.2) + o.amp * 0.12 * Math.sin(o.phase + 1.2);
     const ly = wave * Math.sign(o.flip || 1) - (o.bend || 0) * (lx * lx) / len;
@@ -99,7 +101,13 @@ export class Drawer {
         const k = 1 - p.age / p.life;
         const fade = Math.min(1, k * 2.5) * Math.min(1, p.age * 12);
         b.state(this.T[p.tex], p.add ? 0 : 0.1);
-        b.quad(p.x, p.y, p.size, p.size, p.rot, [p.col[0], p.col[1], p.col[2], p.col[3] * fade], p.add);
+        if (p.kind === 'drop') {
+          // Spray droplets stretch along their flight path.
+          const v = Math.hypot(p.vx, p.vy);
+          b.quad(p.x, p.y, p.size * (1 + v * 0.004), p.size * 0.8, Math.atan2(p.vy, p.vx), [p.col[0], p.col[1], p.col[2], p.col[3] * fade], false);
+        } else {
+          b.quad(p.x, p.y, p.size, p.size, p.rot, [p.col[0], p.col[1], p.col[2], p.col[3] * fade], p.add);
+        }
       }
     }
   }
@@ -255,23 +263,24 @@ export class Drawer {
       if (!this.inView(s.x, s.y, 300)) continue;
       const fade = s.hp <= 0 ? Math.max(0, 1 - s.gone / 3) : 1;
       const hit = s.stun > 0 ? 0.5 + 0.5 * Math.sin(w.time * 40) : 1;
-      body(b, I.shark, { x: s.x, y: s.y, angle: s.angle, flip: s.flip, len: s.len, phase: s.phase, amp: 7, col: [hit, hit, hit, fade], pivot: 0.45 });
+      body(b, I.shark, { x: s.x, y: s.y, angle: s.angle, flip: Math.sign(s.flip) || 1, lenScale: Math.max(0.22, Math.abs(s.flip)), len: s.len, phase: s.phase, amp: 7, col: [hit, hit, hit, fade], pivot: 0.45 });
     }
 
     if (w.boss) this.boss(b, w.boss);
 
     for (const f of w.followers) {
       if (!this.inView(f.x, f.y)) continue;
-      body(b, I.mio, { x: f.x, y: f.y, angle: f.angle, flip: f.flip, len: 150, phase: f.phase, amp: 10, bend: f.bend, col: [0.85, 0.92, 1, 1] });
+      body(b, I.mio, { x: f.x, y: f.y, angle: f.angle, flip: Math.sign(f.flip) || 1, lenScale: Math.max(0.22, Math.abs(f.flip)), len: 150, phase: f.phase, amp: 10, bend: f.bend, col: [0.85, 0.92, 1, 1] });
     }
 
     // Mio.
     if (!pl.dead || pl.hurtFlash > 0) {
       const blink = pl.invuln > 0 && Math.floor(pl.invuln * 12) % 2 === 0 ? 0.45 : 1;
       const red = pl.hurtFlash > 0 ? 1 : 0;
-      const spin = pl.spin > 0 ? (1 - pl.spin) * TAU : 0;
-      body(b, I.mio, { x: pl.x, y: pl.y, angle: pl.angle + spin * Math.sign(pl.flip), flip: pl.flip, len: 185, phase: pl.phase,
-        amp: pl.airborne ? 3 : 11, bend: pl.bend, col: [1, 1 - red * 0.5, 1 - red * 0.5, blink], fog: 0.05 });
+      const pose = pl.turnPose();
+      body(b, I.mio, { x: pl.x, y: pl.y, angle: pl.angle + pl.spinAngle(), flip: pl.flip, len: 185, phase: pl.phase,
+        amp: pl.airborne ? 3 : 11 * (1 - pose.curl * 0.6), bend: pl.bend - pose.curl * 0.55, lenScale: pose.len, thick: 1 + pose.curl * 0.18,
+        col: [1, 1 - red * 0.5, 1 - red * 0.5, blink], fog: 0.05 });
       if (pl.charge > 0) {
         const [hx, hy] = pl.head();
         const k = pl.charge;

@@ -179,16 +179,21 @@ export class World {
   updateCamera(dt, aspect) {
     const pl = this.player, c = this.cam;
     const look = pl.airborne ? 0.15 : 0.32;
-    const tx = pl.x + pl.vx * look, ty = pl.y + pl.vy * look * 0.7;
-    c.x = damp(c.x, tx, 3.2, dt);
-    c.y = damp(c.y, ty, 3.2, dt);
-    const zt = 1 + clamp((pl.speed - 250) / 900, 0, 0.12) + (this.boss && this.boss.state !== 'dormant' && this.boss.state !== 'dying' ? 0.35 : 0);
+    // High leaps pull the view back a little so the whole arc stays readable.
+    const height = pl.airborne ? clamp(-pl.y / 1000, 0, 1) : 0;
+    const zt = 1 + clamp((pl.speed - 250) / 900, 0, 0.12) + height * 0.3
+      + (this.boss && this.boss.state !== 'dormant' && this.boss.state !== 'dying' ? 0.35 : 0);
     c.zoom = damp(c.zoom, zt, 1.2, dt);
     const [hw, hh] = this.viewSize(aspect, c.zoom);
     c.hw = hw; c.hh = hh;
+    // Clamp the target rather than the camera so the view glides back after a leap instead of snapping.
     const W = this.level.width;
-    c.x = W > hw * 2 - 300 ? clamp(c.x, hw - 150, W - hw + 150) : W / 2;
-    c.y = clamp(c.y, -hh * 0.6, this.level.height - hh * 0.4);
+    let tx = pl.x + pl.vx * look, ty = pl.y + pl.vy * look * 0.7;
+    tx = W > hw * 2 - 300 ? clamp(tx, hw - 150, W - hw + 150) : W / 2;
+    const top = pl.airborne ? Math.min(-hh * 0.6, pl.y + hh * 0.2) : -hh * 0.6;
+    ty = clamp(ty, top, this.level.height - hh * 0.4);
+    c.x = damp(c.x, tx, 3.2, dt);
+    c.y = damp(c.y, ty, pl.airborne ? 4 : 3.2, dt);
     c.shake = Math.max(0, c.shake - dt * 2.5);
   }
 
@@ -290,14 +295,37 @@ export class World {
         break;
       case 'leap':
       case 'splash': {
-        const x = d.x, y = name === 'leap' ? surfaceY(d.x, this.time) : d.y;
-        const k = name === 'leap' ? 1 : d.k;
-        for (let i = 0; i < 26 * k; i++) {
-          pt.spawn({ x: x + rand(-20, 20), y, vx: rand(-180, 180), vy: -rand(150, 520) * k, grav: 1100, drag: 0.4,
-            life: rand(0.5, 1.1), size: rand(4, 10), tex: 'dot', add: false, col: [0.92, 0.98, 1, 0.9], layer: 'near' });
+        // Everything scales with how fast Mio crosses the surface (k ~0.5 small hop, ~1 dash, 2+ big dive).
+        const x = d.x, y = d.y, k = clamp(d.k, 0.25, 2.6);
+        const drop = (o) => pt.spawn({ grav: 1100, drag: 0.4, tex: 'dot', add: false, col: [0.88, 0.97, 1, 1], layer: 'near', kind: 'drop', ...o });
+        for (let i = 0; i < 10 + 34 * k; i++) {
+          drop({ x: x + rand(-14, 14) * k, y, vx: rand(-1, 1) * (40 + 50 * k), vy: -rand(120, 260 + 300 * k),
+            life: rand(0.5, 0.8 + 0.35 * k), size: rand(4, 8 + 5 * k) });
         }
-        pt.bubbles(x, y + 20, 14 * k, 30, 90);
-        c.shake = Math.max(c.shake, 0.25 * k);
+        // Crown: sheets of water thrown outward to both sides.
+        for (let i = 0; i < 8 * k; i++) {
+          const side = i % 2 ? 1 : -1;
+          drop({ x: x + side * rand(10, 40 * k), y, vx: side * rand(90, 200 * k), vy: -rand(180, 360 * k),
+            life: rand(0.5, 0.9), size: rand(5, 9 + 3 * k) });
+        }
+        // A plume of white water rising out of big splashes.
+        for (let i = 0; i < 6 * (k - 0.6); i++) {
+          pt.spawn({ x: x + rand(-12, 12) * k, y: y - rand(0, 20), vx: rand(-40, 40), vy: -rand(200, 330 + 220 * k), grav: 900, drag: 0.8,
+            life: rand(0.6, 0.9 + 0.2 * k), size: rand(26, 44) * k, grow: 40, tex: 'glow', add: false, col: [0.96, 1, 1, 0.55], layer: 'near' });
+        }
+        // Mist hanging over the splash.
+        for (let i = 0; i < 4 * k; i++) {
+          pt.spawn({ x: x + rand(-30, 30) * k, y: y - rand(10, 50 * k), vx: rand(-30, 30), vy: -rand(10, 60), grav: 0, drag: 1.5,
+            life: rand(0.8, 1.6), size: rand(30, 60) * k, grow: 30, tex: 'glow', add: false, col: [1, 1, 1, 0.22], layer: 'near' });
+        }
+        // Foam spreading along the surface.
+        for (let i = 0; i < 12 * k; i++) {
+          const side = rand() < 0.5 ? -1 : 1;
+          pt.spawn({ x: x + side * rand(0, 30 * k), y: y + rand(-2, 3), vx: side * rand(40, 240 * k), vy: 0, grav: 0, drag: 2.2,
+            life: rand(0.8, 1.6), size: rand(6, 12), tex: 'dot', add: false, col: [0.95, 1, 1, 0.75], layer: 'near' });
+        }
+        pt.bubbles(x, y + 20 + 10 * k, 6 + 20 * k, 20 + 30 * k, 60 + 60 * k);
+        c.shake = Math.max(c.shake, Math.min(0.7, 0.08 + 0.22 * k));
         break;
       }
       case 'hurt':

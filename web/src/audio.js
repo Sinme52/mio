@@ -257,7 +257,7 @@ export class Audio {
         this.noise({ dur: 0.35, gain: 0.35, f0: 400, f1: 2400, q: 0.8 });
         break;
       case 'splash':
-        this.noise({ dur: 0.7 * k, gain: 0.5, f0: 3000, f1: 300, q: 0.5, type: 'lowpass' });
+        this.noise({ dur: 0.35 + 0.4 * k, gain: Math.min(0.7, 0.18 + 0.25 * k), f0: 2000 + 1000 * k, f1: 300, q: 0.5, type: 'lowpass' });
         for (let i = 0; i < 6; i++) this.tone({ f0: 300 + Math.random() * 500, f1: 900 + Math.random() * 900, dur: 0.08, gain: 0.08, at: 0.1 + i * 0.05 });
         break;
       case 'breath':

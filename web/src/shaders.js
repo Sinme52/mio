@@ -89,9 +89,14 @@ void main() {
   vec2 w = worldAt(vUV);
   float sy = surfaceY(w.x);
   if (w.y < sy) {
-    float h = sy - w.y;
+    // Measured from the still water level, not the animated waves, so the distant view stays steady.
+    float h = -w.y;
     float u = 0.5 + (w.x - uCam.x) / uSkySize.x + uCam.x * 0.00003;
-    vec3 sky = texture(uSky, vec2(u, 0.9 - h / uSkySize.y)).rgb;
+    float v = 0.9 - h / uSkySize.y;
+    vec3 sky = texture(uSky, vec2(u, max(v, 0.0))).rgb;
+    // Above the top of the painting (very high leaps), fade into its average zenith colour.
+    vec3 zenith = textureLod(uSky, vec2(0.5, 0.02), 8.0).rgb;
+    sky = mix(sky, zenith, 1.0 - smoothstep(-0.05, 0.15, v));
     o = vec4(sky * uSkyTint, 1.0);
     return;
   }
