@@ -90,7 +90,10 @@ tools/               画像生成・加工、検証スクリプト
 
 ## 画像の作り方（GPT Image 2.5）
 
-画像は `gpt-image-2.5` スキルで生成しています（いまは下書き品質 `medium`）。
+画像は `gpt-image-2.5` スキルで生成しています。下書き品質 `medium` で作って形を決めてから、
+採用した画像を `xhigh` で描き直しています。いま入っている画像はすべて `xhigh` です
+（`assets_src/` の 22 枚と、振り返りのコマのうちゲームで使う 3 枚。使っていない振り返りの候補は `medium` のまま）。
+各画像と同じ名前の `.json` に、プロンプト・モデル・品質が残っています。
 
 ```bash
 python3 tools/gen_assets.py            # tools/asset_prompts.json の未生成分を作る（assets_src/）
@@ -99,8 +102,17 @@ python3 tools/process_assets.py        # 切り抜き・縮小して web/assets/
 python3 tools/make_store_assets.py     # Steam 用の各サイズとアイコンを合成する
 ```
 
-発売前に仕上げる場合は、気に入った下書きをスキルの `release`（`xhigh` 品質）で描き直してから
-`process_assets.py` と `make_store_assets.py` をもう一度実行してください。
+画像を作り直したときは、`medium` の下書きで確かめてから `xhigh` で仕上げます。
+
+```bash
+python3 tools/release_assets.py mio shark      # 下書きを xhigh で描き直す（assets_release/ に出力。名前なしで全部）
+python3 tools/release_assets.py --apply mio shark  # 確認したものを assets_src/ に上書きする
+python3 tools/process_assets.py                # ゲーム用の画像を作り直す
+python3 tools/make_store_assets.py             # Steam 用の画像とアイコンを作り直す
+```
+
+振り返りのコマ（`assets_src/turn/`）は、横向きの澪を参考画像にして `tools/gen_turn_frames.py` で作り、
+採用した候補をスキルの `release` で `xhigh` にしてから `python3 tools/gen_turn_frames.py --export` で書き出します。
 
 ## 検証
 
@@ -119,7 +131,7 @@ AAA タイトルは通常、数十〜数百人が数年かけて作るもので�
 1. **実機での性能確認**：開発環境は GPU がなくソフトウェア描画でしか確認できていません。
    Windows の内蔵 GPU / 単体 GPU と Steam Deck で 60fps 出るか確かめ、必要なら画質「中」を既定にしてください。
 2. **テストプレイ**：難易度（空気の量・鮫の速さ・ボスの攻撃間隔）は `player.js` の `P` と `boss.js` で調整できます。
-3. **画像の本番品質化**：上記の `release`（xhigh）で仕上げ。
+3. **画像の確認**：画像は `xhigh` で仕上げ済みです。既存の作品に似すぎていないか人の目で確かめ、Steam では AI 生成コンテンツの使用を申告してください。
 4. **音**：合成音でも成立していますが、作曲家による音楽・効果音に差し替えると印象が大きく上がります。
 5. **キー割り当て変更・字幕サイズなどのアクセシビリティ設定**、Steam クラウドセーブの設定。
 6. Steam への登録手続き（[STEAM.md](STEAM.md)）。
