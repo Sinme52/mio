@@ -1,25 +1,27 @@
 {
-  "kind": "draft",
+  "kind": "release",
+  "mode": "edit",
+  "source_image": "/home/user/youtube-opus5.5/game/assets_src/b3_far.png",
   "prompt": "Wide panoramic underwater background layer: silhouettes of a vast sunken ancient city, colossal ruined temple columns, broken arches and a stepped ziggurat fading into deep blue haze along the bottom half, mysterious and awe-inspiring, painterly. Upper area fully transparent. Even horizontal composition. Painterly, cinematic concept-art quality game asset, soft volumetric underwater light, rich but natural colors, high detail, clean edges, no text, no watermark, no border.",
   "model": "gpt-image-2.5-sunburst",
-  "quality": "medium",
+  "quality": "xhigh",
   "size": "2400x800",
   "output_format": "png",
   "background": "transparent",
-  "created_at": "2026-10-26T23:23:07",
-  "request_id": "req_08bbef89d2fc42488de03b82b339c723",
-  "elapsed_sec": 13.8,
+  "created_at": "2026-10-27T01:35:06",
+  "request_id": "req_f3efd3fba1de4c0db434509b89d9256b",
+  "elapsed_sec": 45.3,
   "usage": {
-    "input_tokens": 98,
+    "input_tokens": 1619,
     "input_tokens_details": {
-      "image_tokens": 0,
-      "text_tokens": 98
+      "image_tokens": 1452,
+      "text_tokens": 167
     },
-    "output_tokens": 189,
+    "output_tokens": 1318,
     "output_tokens_details": {
-      "image_tokens": 189,
+      "image_tokens": 1318,
       "text_tokens": 0
     },
-    "total_tokens": 287
+    "total_tokens": 2937
   }
 }

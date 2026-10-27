@@ -1,25 +1,27 @@
 {
-  "kind": "draft",
+  "kind": "release",
+  "mode": "edit",
+  "source_image": "/home/user/youtube-opus5.5/game/assets_src/b1_mid.png",
   "prompt": "Wide panoramic underwater game background layer: a vibrant coral reef along the bottom of the image with branching staghorn corals, brain corals, purple sea fans, soft pink anemones and sponges at varying heights, lit by dappled sunlight. Everything above the reef is fully transparent. Even horizontal composition with no focal object. Painterly, cinematic concept-art quality game asset, soft volumetric underwater light, rich but natural colors, high detail, clean edges, no text, no watermark, no border.",
   "model": "gpt-image-2.5-sunburst",
-  "quality": "medium",
+  "quality": "xhigh",
   "size": "2400x800",
   "output_format": "png",
   "background": "transparent",
-  "created_at": "2026-10-26T23:23:05",
-  "request_id": "req_c99deeb2954544db96a473faab2a4908",
-  "elapsed_sec": 13.6,
+  "created_at": "2026-10-27T01:34:29",
+  "request_id": "req_f72dd575798f46d28bd6a525620eb190",
+  "elapsed_sec": 30.8,
   "usage": {
-    "input_tokens": 110,
+    "input_tokens": 1631,
     "input_tokens_details": {
-      "image_tokens": 0,
-      "text_tokens": 110
+      "image_tokens": 1452,
+      "text_tokens": 179
     },
-    "output_tokens": 189,
+    "output_tokens": 1318,
     "output_tokens_details": {
-      "image_tokens": 189,
+      "image_tokens": 1318,
       "text_tokens": 0
     },
-    "total_tokens": 299
+    "total_tokens": 2949
   }
 }

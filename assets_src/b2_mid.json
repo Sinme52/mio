@@ -1,25 +1,27 @@
 {
-  "kind": "draft",
+  "kind": "release",
+  "mode": "edit",
+  "source_image": "/home/user/youtube-opus5.5/game/assets_src/b2_mid.png",
   "prompt": "Wide panoramic underwater game background layer: mossy rocky outcrops along the bottom with clusters of golden-brown giant kelp, sea urchins and starfish on the rocks, painterly detail, lit from above. Everything above is fully transparent. Even horizontal composition. Painterly, cinematic concept-art quality game asset, soft volumetric underwater light, rich but natural colors, high detail, clean edges, no text, no watermark, no border.",
   "model": "gpt-image-2.5-sunburst",
-  "quality": "medium",
+  "quality": "xhigh",
   "size": "2400x800",
   "output_format": "png",
   "background": "transparent",
-  "created_at": "2026-10-26T23:23:07",
-  "request_id": "req_ef8fa9028f584734b903f9626913f188",
-  "elapsed_sec": 14.6,
+  "created_at": "2026-10-27T01:34:46",
+  "request_id": "req_2400d9b035864519abd727aa8f80a4c6",
+  "elapsed_sec": 30.3,
   "usage": {
-    "input_tokens": 97,
+    "input_tokens": 1618,
     "input_tokens_details": {
-      "image_tokens": 0,
-      "text_tokens": 97
+      "image_tokens": 1452,
+      "text_tokens": 166
     },
-    "output_tokens": 189,
+    "output_tokens": 1318,
     "output_tokens_details": {
-      "image_tokens": 189,
+      "image_tokens": 1318,
       "text_tokens": 0
     },
-    "total_tokens": 286
+    "total_tokens": 2936
   }
 }

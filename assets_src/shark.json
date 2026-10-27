@@ -1,25 +1,27 @@
 {
-  "kind": "draft",
+  "kind": "release",
+  "mode": "edit",
+  "source_image": "/home/user/youtube-opus5.5/game/assets_src/shark.png",
   "prompt": "A sleek grey reef shark seen in perfect side profile, facing right, body perfectly straight and horizontal from snout to tail, menacing but realistic, dark grey back fading to white belly, sharp dorsal fin. Isolated game sprite on a fully transparent background, no water, no shadow, whole body centered with margin. Painterly, cinematic concept-art quality game asset, soft volumetric underwater light, rich but natural colors, high detail, clean edges, no text, no watermark, no border.",
   "model": "gpt-image-2.5-sunburst",
-  "quality": "medium",
+  "quality": "xhigh",
   "size": "1536x1024",
   "output_format": "png",
   "background": "transparent",
-  "created_at": "2026-10-26T23:22:37",
-  "request_id": "req_9143fdca59994681a2fc96f01974246f",
-  "elapsed_sec": 13.8,
+  "created_at": "2026-10-27T01:33:47",
+  "request_id": "req_e147359fb0ec4426aa03f83a3f738d98",
+  "elapsed_sec": 40.8,
   "usage": {
-    "input_tokens": 106,
+    "input_tokens": 1711,
     "input_tokens_details": {
-      "image_tokens": 0,
-      "text_tokens": 106
+      "image_tokens": 1536,
+      "text_tokens": 175
     },
-    "output_tokens": 343,
+    "output_tokens": 2459,
     "output_tokens_details": {
-      "image_tokens": 343,
+      "image_tokens": 2459,
       "text_tokens": 0
     },
-    "total_tokens": 449
+    "total_tokens": 4170
   }
 }

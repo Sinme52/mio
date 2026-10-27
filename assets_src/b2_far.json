@@ -1,25 +1,27 @@
 {
-  "kind": "draft",
+  "kind": "release",
+  "mode": "edit",
+  "source_image": "/home/user/youtube-opus5.5/game/assets_src/b2_far.png",
   "prompt": "Wide panoramic underwater background layer: a distant towering kelp forest, tall kelp stalks rising from a hazy rocky seabed toward the top, soft green-teal atmospheric haze, beams of light filtering between the stalks, painterly silhouettes. Transparent background between and above the kelp. Even horizontal composition. Painterly, cinematic concept-art quality game asset, soft volumetric underwater light, rich but natural colors, high detail, clean edges, no text, no watermark, no border.",
   "model": "gpt-image-2.5-sunburst",
-  "quality": "medium",
+  "quality": "xhigh",
   "size": "2400x800",
   "output_format": "png",
   "background": "transparent",
-  "created_at": "2026-10-26T23:23:08",
-  "request_id": "req_72c0f6da2c974e46bfd81d57c2b83e02",
-  "elapsed_sec": 15.7,
+  "created_at": "2026-10-27T01:34:35",
+  "request_id": "req_a3f425f7b2ab4e54bd18143e5ef9d562",
+  "elapsed_sec": 30.0,
   "usage": {
-    "input_tokens": 105,
+    "input_tokens": 1626,
     "input_tokens_details": {
-      "image_tokens": 0,
-      "text_tokens": 105
+      "image_tokens": 1452,
+      "text_tokens": 174
     },
-    "output_tokens": 189,
+    "output_tokens": 1318,
     "output_tokens_details": {
-      "image_tokens": 189,
+      "image_tokens": 1318,
       "text_tokens": 0
     },
-    "total_tokens": 294
+    "total_tokens": 2944
   }
 }

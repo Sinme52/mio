@@ -1,25 +1,27 @@
 {
-  "kind": "draft",
+  "kind": "release",
+  "mode": "edit",
+  "source_image": "/home/user/youtube-opus5.5/game/assets_src/b4_far.png",
   "prompt": "Wide panoramic deep-sea background layer: an abyssal trench with jagged black basalt spires and cliffs as silhouettes in deep indigo darkness, tiny scattered bioluminescent cyan and violet specks, painterly. Upper area fully transparent. Even horizontal composition. Painterly, cinematic concept-art quality game asset, soft volumetric underwater light, rich but natural colors, high detail, clean edges, no text, no watermark, no border.",
   "model": "gpt-image-2.5-sunburst",
-  "quality": "medium",
+  "quality": "xhigh",
   "size": "2400x800",
   "output_format": "png",
   "background": "transparent",
-  "created_at": "2026-10-26T23:23:18",
-  "request_id": "req_a308767c240744c0af32a64a01f8aa75",
-  "elapsed_sec": 12.6,
+  "created_at": "2026-10-27T01:34:52",
+  "request_id": "req_fcab9df70c2f4b1082914c563bb29ab3",
+  "elapsed_sec": 27.9,
   "usage": {
-    "input_tokens": 96,
+    "input_tokens": 1617,
     "input_tokens_details": {
-      "image_tokens": 0,
-      "text_tokens": 96
+      "image_tokens": 1452,
+      "text_tokens": 165
     },
-    "output_tokens": 189,
+    "output_tokens": 1318,
     "output_tokens_details": {
-      "image_tokens": 189,
+      "image_tokens": 1318,
       "text_tokens": 0
     },
-    "total_tokens": 285
+    "total_tokens": 2935
   }
 }

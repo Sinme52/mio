@@ -1,25 +1,27 @@
 {
-  "kind": "draft",
+  "kind": "release",
+  "mode": "edit",
+  "source_image": "/home/user/youtube-opus5.5/game/assets_src/b4_mid.png",
   "prompt": "Wide panoramic deep-sea game background layer: hydrothermal vent chimneys, clusters of glowing bioluminescent tube worms and alien corals in cyan, magenta and violet light, along the bottom of the image, dark surroundings. Everything above is fully transparent. Even horizontal composition. Painterly, cinematic concept-art quality game asset, soft volumetric underwater light, rich but natural colors, high detail, clean edges, no text, no watermark, no border.",
   "model": "gpt-image-2.5-sunburst",
-  "quality": "medium",
+  "quality": "xhigh",
   "size": "2400x800",
   "output_format": "png",
   "background": "transparent",
-  "created_at": "2026-10-26T23:23:23",
-  "request_id": "req_061e3c79d061400ca11f75a27c15736b",
-  "elapsed_sec": 16.4,
+  "created_at": "2026-10-27T01:35:01",
+  "request_id": "req_25f9d31824e14b439b9a39dc46774ac1",
+  "elapsed_sec": 31.4,
   "usage": {
-    "input_tokens": 100,
+    "input_tokens": 1621,
     "input_tokens_details": {
-      "image_tokens": 0,
-      "text_tokens": 100
+      "image_tokens": 1452,
+      "text_tokens": 169
     },
-    "output_tokens": 189,
+    "output_tokens": 1318,
     "output_tokens_details": {
-      "image_tokens": 189,
+      "image_tokens": 1318,
       "text_tokens": 0
     },
-    "total_tokens": 289
+    "total_tokens": 2939
   }
 }

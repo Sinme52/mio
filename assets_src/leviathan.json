@@ -1,25 +1,27 @@
 {
-  "kind": "draft",
+  "kind": "release",
+  "mode": "edit",
+  "source_image": "/home/user/youtube-opus5.5/game/assets_src/leviathan.png",
   "prompt": "A colossal eel-like abyssal leviathan, the corrupted shadow of the deep sea, seen in perfect side profile with its head on the right, very long body stretched perfectly straight and horizontal, flesh like dark ink and obsidian with smoky ragged fin membranes, a row of glowing pale violet bioluminescent cores along its spine, hollow faintly glowing eyes, eerie and majestic. Isolated game sprite on a fully transparent background, no water, no shadow, entire body visible with margin. Painterly, cinematic concept-art quality game asset, soft volumetric underwater light, rich but natural colors, high detail, clean edges, no text, no watermark, no border.",
   "model": "gpt-image-2.5-sunburst",
-  "quality": "medium",
+  "quality": "xhigh",
   "size": "2400x800",
   "output_format": "png",
   "background": "transparent",
-  "created_at": "2026-10-26T23:22:39",
-  "request_id": "req_4abb6b85bb694473898b2c69151c6c9a",
-  "elapsed_sec": 15.5,
+  "created_at": "2026-10-27T01:33:39",
+  "request_id": "req_040884a4022d407d9181557b5edcb7c7",
+  "elapsed_sec": 31.8,
   "usage": {
-    "input_tokens": 142,
+    "input_tokens": 1663,
     "input_tokens_details": {
-      "image_tokens": 0,
-      "text_tokens": 142
+      "image_tokens": 1452,
+      "text_tokens": 211
     },
-    "output_tokens": 189,
+    "output_tokens": 1318,
     "output_tokens_details": {
-      "image_tokens": 189,
+      "image_tokens": 1318,
       "text_tokens": 0
     },
-    "total_tokens": 331
+    "total_tokens": 2981
   }
 }

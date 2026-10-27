@@ -1,25 +1,27 @@
 {
-  "kind": "draft",
+  "kind": "release",
+  "mode": "edit",
+  "source_image": "/home/user/youtube-opus5.5/game/assets_src/b1_far.png",
   "prompt": "Wide panoramic underwater background layer: distant coral reef ridges and rock mounds as soft hazy silhouettes along the bottom third of the image, bathed in turquoise atmospheric haze, subtle sunlight from above, painterly. The upper part of the image is fully transparent. Seamless-feeling horizontal composition with no focal object. Painterly, cinematic concept-art quality game asset, soft volumetric underwater light, rich but natural colors, high detail, clean edges, no text, no watermark, no border.",
   "model": "gpt-image-2.5-sunburst",
-  "quality": "medium",
+  "quality": "xhigh",
   "size": "2400x800",
   "output_format": "png",
   "background": "transparent",
-  "created_at": "2026-10-26T23:22:52",
-  "request_id": "req_7537ae850a1d43e29752a3a2d9169f42",
-  "elapsed_sec": 12.7,
+  "created_at": "2026-10-27T01:34:15",
+  "request_id": "req_f17f40cc525f45a0a27789e1629b4237",
+  "elapsed_sec": 28.0,
   "usage": {
-    "input_tokens": 106,
+    "input_tokens": 1627,
     "input_tokens_details": {
-      "image_tokens": 0,
-      "text_tokens": 106
+      "image_tokens": 1452,
+      "text_tokens": 175
     },
-    "output_tokens": 189,
+    "output_tokens": 1318,
     "output_tokens_details": {
-      "image_tokens": 189,
+      "image_tokens": 1318,
       "text_tokens": 0
     },
-    "total_tokens": 295
+    "total_tokens": 2945
   }
 }

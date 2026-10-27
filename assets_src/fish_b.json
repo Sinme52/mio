@@ -1,25 +1,27 @@
 {
-  "kind": "draft",
+  "kind": "release",
+  "mode": "edit",
+  "source_image": "/home/user/youtube-opus5.5/game/assets_src/fish_b.png",
   "prompt": "A single small bright yellow and blue tropical reef fish in perfect side profile facing right. Isolated game sprite on a fully transparent background, centered, no shadow. Painterly, cinematic concept-art quality game asset, soft volumetric underwater light, rich but natural colors, high detail, clean edges, no text, no watermark, no border.",
   "model": "gpt-image-2.5-sunburst",
-  "quality": "medium",
+  "quality": "xhigh",
   "size": "1024x1024",
   "output_format": "png",
   "background": "transparent",
-  "created_at": "2026-10-26T23:22:52",
-  "request_id": "req_c5636359bc9c4e7f9ffe5e27883a9a0d",
-  "elapsed_sec": 15.1,
+  "created_at": "2026-10-27T01:34:04",
+  "request_id": "req_bcddf28771e04c36aba6ee3a353129bf",
+  "elapsed_sec": 57.3,
   "usage": {
-    "input_tokens": 74,
+    "input_tokens": 1167,
     "input_tokens_details": {
-      "image_tokens": 0,
-      "text_tokens": 74
+      "image_tokens": 1024,
+      "text_tokens": 143
     },
-    "output_tokens": 439,
+    "output_tokens": 3122,
     "output_tokens_details": {
-      "image_tokens": 439,
+      "image_tokens": 3122,
       "text_tokens": 0
     },
-    "total_tokens": 513
+    "total_tokens": 4289
   }
 }

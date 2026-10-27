@@ -1,25 +1,27 @@
 {
-  "kind": "draft",
+  "kind": "release",
+  "mode": "edit",
+  "source_image": "/home/user/youtube-opus5.5/game/assets_src/crystal.png",
   "prompt": "A floating ancient song-stone: a tall luminous aquamarine crystal monolith with smooth facets, engraved with glowing spiral wave glyphs, soft inner light, a few small crystal shards orbiting it. Isolated game object on a fully transparent background, centered, no shadow. Painterly, cinematic concept-art quality game asset, soft volumetric underwater light, rich but natural colors, high detail, clean edges, no text, no watermark, no border.",
   "model": "gpt-image-2.5-sunburst",
-  "quality": "medium",
+  "quality": "xhigh",
   "size": "1024x1536",
   "output_format": "png",
   "background": "transparent",
-  "created_at": "2026-10-26T23:22:54",
-  "request_id": "req_48d84ef1881b46c58932729ca9324a62",
-  "elapsed_sec": 14.2,
+  "created_at": "2026-10-27T01:34:23",
+  "request_id": "req_28fd6d40b5124f21b911ab51faa5f77b",
+  "elapsed_sec": 38.8,
   "usage": {
-    "input_tokens": 98,
+    "input_tokens": 1703,
     "input_tokens_details": {
-      "image_tokens": 0,
-      "text_tokens": 98
+      "image_tokens": 1536,
+      "text_tokens": 167
     },
-    "output_tokens": 343,
+    "output_tokens": 2459,
     "output_tokens_details": {
-      "image_tokens": 343,
+      "image_tokens": 2459,
       "text_tokens": 0
     },
-    "total_tokens": 441
+    "total_tokens": 4162
   }
 }

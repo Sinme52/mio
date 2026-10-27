@@ -1,25 +1,27 @@
 {
-  "kind": "draft",
+  "kind": "release",
+  "mode": "edit",
+  "source_image": "/home/user/youtube-opus5.5/game/assets_src/logo.png",
   "prompt": "An elegant video game logo on a fully transparent background: the word \"MIO\" in large refined serif capitals with a luminous aquamarine-to-white gradient and soft glow, a stylized leaping dolphin and flowing wave line woven into the letters, and beneath it the smaller subtitle \"HYMN OF THE BLUE\" in spaced-out elegant capitals. Clean, centered, no background. Painterly, cinematic concept-art quality game asset, soft volumetric underwater light, rich but natural colors, high detail, clean edges, no text, no watermark, no border.",
   "model": "gpt-image-2.5-sunburst",
-  "quality": "medium",
+  "quality": "xhigh",
   "size": "1536x1024",
   "output_format": "png",
   "background": "transparent",
-  "created_at": "2026-10-26T23:23:36",
-  "request_id": "req_b9aef165c5c34f348ffb3f1b00218a6e",
-  "elapsed_sec": 16.7,
+  "created_at": "2026-10-27T01:35:47",
+  "request_id": "req_dad9e75937bd48aa935b09a5fa6f9553",
+  "elapsed_sec": 45.9,
   "usage": {
-    "input_tokens": 118,
+    "input_tokens": 1723,
     "input_tokens_details": {
-      "image_tokens": 0,
-      "text_tokens": 118
+      "image_tokens": 1536,
+      "text_tokens": 187
     },
-    "output_tokens": 343,
+    "output_tokens": 2459,
     "output_tokens_details": {
-      "image_tokens": 343,
+      "image_tokens": 2459,
       "text_tokens": 0
     },
-    "total_tokens": 461
+    "total_tokens": 4182
   }
 }

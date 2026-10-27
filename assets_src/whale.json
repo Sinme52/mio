@@ -1,25 +1,27 @@
 {
-  "kind": "draft",
+  "kind": "release",
+  "mode": "edit",
+  "source_image": "/home/user/youtube-opus5.5/game/assets_src/whale.png",
   "prompt": "An enormous ancient humpback whale seen in side profile facing right, gliding, long pectoral fins, barnacles, faint glowing aquamarine spiral runes etched on its skin, serene and majestic. Isolated on a fully transparent background, no water, no shadow, whole body visible with margin. Painterly, cinematic concept-art quality game asset, soft volumetric underwater light, rich but natural colors, high detail, clean edges, no text, no watermark, no border.",
   "model": "gpt-image-2.5-sunburst",
-  "quality": "medium",
+  "quality": "xhigh",
   "size": "2048x1024",
   "output_format": "png",
   "background": "transparent",
-  "created_at": "2026-10-26T23:22:39",
-  "request_id": "req_c396fc07c49b4f318d524f1f80df8ce9",
-  "elapsed_sec": 15.7,
+  "created_at": "2026-10-27T01:33:43",
+  "request_id": "req_12c596d73273408eba20b3bb4d473577",
+  "elapsed_sec": 36.0,
   "usage": {
-    "input_tokens": 104,
+    "input_tokens": 1631,
     "input_tokens_details": {
-      "image_tokens": 0,
-      "text_tokens": 104
+      "image_tokens": 1458,
+      "text_tokens": 173
     },
-    "output_tokens": 295,
+    "output_tokens": 2098,
     "output_tokens_details": {
-      "image_tokens": 295,
+      "image_tokens": 2098,
       "text_tokens": 0
     },
-    "total_tokens": 399
+    "total_tokens": 3729
   }
 }
