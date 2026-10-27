@@ -4,10 +4,13 @@ import { angDiff, clamp, damp, surfaceY } from './util.js';
 export const P = {
   cruise: 310, dash: 760, dashTime: 0.34, dashCd: 0.5, turn: 4.6, turnDash: 2.8,
   radius: 20, airTime: 42, gravity: 950, jumpSpeed: 250, maxHealth: 6, chargeTime: 0.85,
-  // Turning around (left <-> right) is a short animated half-roll rather than an instant mirror.
-  reverseTime: 0.42, reverseTimeDash: 0.26,
-  // Breaching at full speed launches Mio high; only jumps this high get a somersault at the top.
-  breachBoost: 1.85, maxLaunch: 1400, length: 185, spinHeight: 185 * 4, spinTime: 0.95,
+  // Turning around (left <-> right) plays the painted turn frames (see draw.js) over this many seconds.
+  reverseTime: 0.48, reverseTimeDash: 0.3,
+  // A dash started deep enough that still has (nearly) full speed at the surface launches Mio high.
+  // Only after such a breach, pressing dash again in the air carries her to the top height, where she
+  // somersaults. Small hops never get the air boost or the spin.
+  breachBoost: 1.45, runUpDepth: 150, fullBreach: 0.8, maxApex: 185 * 5.1,
+  length: 185, spinHeight: 185 * 4, spinTime: 0.95,
 };
 
 export class Player {
@@ -16,7 +19,7 @@ export class Player {
     // Heading = facing (+1 right / -1 left) and elevation (pitch, +down); angle is derived from both.
     this.facing = 1; this.elev = 0; this.angle = 0; this.flip = 1;
     this.turnT = -1; this.turnDur = P.reverseTime;
-    this.jumpHeight = 0; this.spinT = -1; this.spinStart = 0;
+    this.jumpHeight = 0; this.spinT = -1; this.dashDepth = 0; this.canAirBoost = false;
     this.health = P.maxHealth; this.air = 1;
     this.invuln = 0; this.dashT = 0; this.dashCd = 0;
     this.charge = 0; this.holding = 0;
@@ -28,14 +31,6 @@ export class Player {
   get dashing() { return this.dashT > 0; }
 
   headingAngle() { return this.facing > 0 ? this.elev : Math.PI - this.elev; }
-
-  // How the body looks mid-reversal: it swings away from the camera, so it appears shorter,
-  // and rolls over at the halfway point (where the facing flips).
-  turnPose() {
-    if (this.turnT < 0) return { len: 1, curl: 0 };
-    const p = this.turnT;
-    return { len: Math.max(0.22, Math.abs(Math.cos(p * Math.PI))), curl: Math.sin(p * Math.PI) };
-  }
 
   // Extra rotation of the somersault (0 when not spinning), eased in and out.
   spinAngle() {
@@ -70,6 +65,7 @@ export class Player {
         if (wantFacing !== this.facing) { this.facing = wantFacing; this.turnT = 0.5; this.turnDur = P.reverseTimeDash; }
         if (steering) this.elev += clamp(wantElev - this.elev, -0.9, 0.9);
         this.dashT = P.dashTime; this.dashCd = P.dashCd + P.dashTime;
+        this.dashDepth = this.y - surf;
         const a = this.headingAngle();
         const sp = Math.max(Math.hypot(this.vx, this.vy), P.dash);
         this.vx = Math.cos(a) * sp; this.vy = Math.sin(a) * sp;
@@ -106,14 +102,18 @@ export class Player {
       if (this.y < surf + 2) {
         if (this.vy < -P.jumpSpeed) {
           const exitSpeed = -this.vy;
-          // A full-speed breach turns into a soaring leap.
-          const boost = 1 + (P.breachBoost - 1) * clamp((exitSpeed - P.cruise) / ((P.dash - P.cruise) * 0.8), 0, 1);
-          this.vy = Math.max(-P.maxLaunch, this.vy * boost);
+          // How much of a run-up this was: a deep dash still near full speed at the surface.
+          const speedK = clamp((exitSpeed - P.cruise) / ((P.dash - P.cruise) * P.fullBreach), 0, 1);
+          const depthK = clamp(this.dashDepth / P.runUpDepth, 0, 1);
+          const boost = 1 + (P.breachBoost - 1) * speedK * depthK;
+          this.vy *= boost;
           this.vx *= 0.9 + 0.1 * boost;
           this.airborne = true;
           this.turnT = -1;
           this.jumpHeight = (this.vy * this.vy) / (2 * P.gravity);
+          this.canAirBoost = speedK >= 1 && depthK >= 1;
           this.spinT = -1;
+          this.dashDepth = 0;
           ev.emit('leap', { x: this.x, y: surf, k: exitSpeed / 650 });
         } else {
           this.y = surf + 2;
@@ -127,6 +127,15 @@ export class Player {
       this.angle = Math.atan2(this.vy, this.vx);
       this.elev = Math.atan2(this.vy, Math.abs(this.vx));
       this.bend = damp(this.bend, 0, 4, dt);
+      // Second kick in the air, only after a full-speed breach and only while still rising.
+      if (input.pressed('dash') && this.canAirBoost && this.vy < 0) {
+        this.canAirBoost = false;
+        const height = surf - this.y;
+        const need = -Math.sqrt(2 * P.gravity * Math.max(0, P.maxApex - height));
+        if (need < this.vy) this.vy = need;
+        this.jumpHeight = height + (this.vy * this.vy) / (2 * P.gravity);
+        ev.emit('airBoost', this);
+      }
       // Big leaps get a somersault centred on the top of the arc.
       if (this.jumpHeight >= P.spinHeight && this.spinT < 0 && this.vy > -P.gravity * P.spinTime / 2) {
         this.spinT = 0;
@@ -137,6 +146,7 @@ export class Player {
         this.airborne = false;
         this.dashT = 0;
         this.spinT = -1;
+        this.canAirBoost = false;
         const entrySpeed = Math.hypot(this.vx, this.vy);
         this.vx *= 0.75; this.vy *= 0.45;
         ev.emit('splash', { x: this.x, y: surf, k: entrySpeed / 650 });

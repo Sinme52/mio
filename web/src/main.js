@@ -9,7 +9,7 @@ import { LEVELS } from './levels.js';
 import { t, setLang, getLang, setPadPrompts } from './i18n.js';
 
 const NO_INPUT = { ax: 0, ay: 0, held: () => false, pressed: () => false, released: () => false };
-const IMAGES = ['mio', 'shark', 'leviathan', 'whale', 'fish_a', 'fish_b', 'turtle', 'manta', 'crystal', 'sky',
+const IMAGES = ['mio', 'mio_turn30', 'mio_turn60', 'mio_front', 'shark', 'leviathan', 'whale', 'fish_a', 'fish_b', 'turtle', 'manta', 'crystal', 'sky',
   'b1_far', 'b1_mid', 'b2_far', 'b2_mid', 'b3_far', 'b3_mid', 'b4_far', 'b4_mid'];
 const SAVE_KEY = 'mio-save-v1';
 const native = window.native || null;
@@ -248,6 +248,7 @@ class App {
       case 'leap': A.sfx('splash', Math.max(0.35, Math.min(2, d.k * 0.8))); A.setUnderwater(false); this.achieve('ACH_FIRST_LEAP'); break;
       case 'splash': A.sfx('splash', Math.max(0.35, Math.min(2, d.k))); A.setUnderwater(true); break;
       case 'trick': A.sfx('dash'); break;
+      case 'airBoost': A.sfx('dash'); break;
       case 'breath': A.sfx('breath'); break;
       case 'hurt': A.sfx('hurt'); break;
       case 'eat': A.sfx('eat'); break;

@@ -328,6 +328,14 @@ export class World {
         c.shake = Math.max(c.shake, Math.min(0.7, 0.08 + 0.22 * k));
         break;
       }
+      case 'airBoost':
+        // A burst of spray shaken off as Mio kicks higher.
+        for (let i = 0; i < 18; i++) {
+          pt.spawn({ x: pl.x + rand(-30, 30), y: pl.y + rand(-10, 20), vx: rand(-120, 120), vy: rand(60, 260), grav: 1100, drag: 0.4,
+            life: rand(0.5, 0.9), size: rand(4, 8), tex: 'dot', add: false, col: [0.88, 0.97, 1, 1], layer: 'near', kind: 'drop' });
+        }
+        c.shake = Math.max(c.shake, 0.2);
+        break;
       case 'hurt':
         this.stats.hurt++;
         c.shake = 0.8;

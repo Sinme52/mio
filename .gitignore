@@ -6,3 +6,4 @@ assets_src/*.png
 assets_release/
 store/screenshots/*.png
 steam/output/
+assets_src/**/*.png

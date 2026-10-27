@@ -37,6 +37,30 @@ function body(b, img, o) {
   b.strip(rows, o.col ?? [1, 1, 1, 1]);
 }
 
+// Painted frames of the dolphin turning toward the viewer, by how far it has turned (degrees from side-on).
+// Heights are in world units, chosen so the frames match the 185-unit side-view sprite.
+const TURN_FRAMES = [
+  { from: 15, img: 'mio_turn30', h: 82 },
+  { from: 45, img: 'mio_turn60', h: 92 },
+  { from: 75, img: 'mio_front', h: 90 },
+];
+
+// theta: 0 = side-on facing `side` (+1 right, -1 left) ... 90 = facing the camera. Returns false when
+// the side-view mesh should be drawn instead (nearly side-on).
+function turnFrame(b, I, x, y, theta, side, elev, scale, col) {
+  let f = null;
+  for (const fr of TURN_FRAMES) if (theta >= fr.from) f = fr;
+  if (!f) return false;
+  const img = I[f.img];
+  const h = f.h * scale, w = h * (img.w / img.h);
+  // Frames are painted facing right; mirror them when facing left. Pitch follows the swim angle,
+  // less so when seen from the front.
+  const pitch = elev * (f.img === 'mio_front' ? 0.25 : 0.8) * side;
+  b.state(img, 0.05);
+  b.quad(x, y, w, h, pitch, col, false, side < 0 ? [1, 0, 0, 1] : null);
+  return true;
+}
+
 function glow(b, tex, x, y, size, col, a = 1) {
   b.state(tex, 0);
   b.quad(x, y, size, size, 0, [col[0], col[1], col[2], a], true);
@@ -271,17 +295,24 @@ export class Drawer {
 
     for (const f of w.followers) {
       if (!this.inView(f.x, f.y)) continue;
-      body(b, I.mio, { x: f.x, y: f.y, angle: f.angle, flip: Math.sign(f.flip) || 1, lenScale: Math.max(0.22, Math.abs(f.flip)), len: 150, phase: f.phase, amp: 10, bend: f.bend, col: [0.85, 0.92, 1, 1] });
+      // Pod members turn with the same painted frames (their flip eases from +1 to -1).
+      const fl = clamp(f.flip, -1, 1), th = (Math.acos(fl) * 180) / Math.PI;
+      const fElev = Math.atan2(Math.sin(f.angle), Math.abs(Math.cos(f.angle)));
+      if (turnFrame(b, I, f.x, f.y, Math.min(th, 180 - th), th < 90 ? 1 : -1, fElev, 150 / 185, [0.85, 0.92, 1, 1])) continue;
+      body(b, I.mio, { x: f.x, y: f.y, angle: f.angle, flip: Math.sign(f.flip) || 1, len: 150, phase: f.phase, amp: 10, bend: f.bend, col: [0.85, 0.92, 1, 1] });
     }
 
     // Mio.
     if (!pl.dead || pl.hurtFlash > 0) {
       const blink = pl.invuln > 0 && Math.floor(pl.invuln * 12) % 2 === 0 ? 0.45 : 1;
       const red = pl.hurtFlash > 0 ? 1 : 0;
-      const pose = pl.turnPose();
-      body(b, I.mio, { x: pl.x, y: pl.y, angle: pl.angle + pl.spinAngle(), flip: pl.flip, len: 185, phase: pl.phase,
-        amp: pl.airborne ? 3 : 11 * (1 - pose.curl * 0.6), bend: pl.bend - pose.curl * 0.55, lenScale: pose.len, thick: 1 + pose.curl * 0.18,
-        col: [1, 1 - red * 0.5, 1 - red * 0.5, blink], fog: 0.05 });
+      const col = [1, 1 - red * 0.5, 1 - red * 0.5, blink];
+      // Turning around plays the painted turn frames; otherwise the side view bends as it swims.
+      const theta = pl.turnT >= 0 ? Math.min(pl.turnT, 1 - pl.turnT) * 180 : 0;
+      if (!turnFrame(b, I, pl.x, pl.y, theta, pl.facing, pl.elev, 1, col)) {
+        body(b, I.mio, { x: pl.x, y: pl.y, angle: pl.angle + pl.spinAngle(), flip: pl.flip, len: 185, phase: pl.phase,
+          amp: pl.airborne ? 3 : 11, bend: pl.bend, col, fog: 0.05 });
+      }
       if (pl.charge > 0) {
         const [hx, hy] = pl.head();
         const k = pl.charge;

@@ -239,7 +239,7 @@ out vec4 vCol;
 out vec2 vW;
 void main() {
   vec2 s = aPos - uCam.xy * uParallax;
-  vW = aPos;
+  vW = uCam.xy + s;   // where this vertex actually appears in the world (differs from aPos for parallax sprites)
   vUV = aUV;
   vCol = aCol;
   gl_Position = vec4(s.x / uCam.z, -s.y / uCam.w, 0.0, 1.0);
@@ -253,9 +253,12 @@ in vec2 vW;
 out vec4 o;
 uniform sampler2D uTex;
 uniform float uFog;
+uniform float uParallax;
 void main() {
   vec4 t = texture(uTex, vUV) * vCol;
   float d = vW.y - surfaceY(vW.x);
+  // Distant sea life lives under the water: never let it show above the surface.
+  if (uParallax < 0.999) t *= smoothstep(-2.0, 4.0, d);
   if (uFog > 0.0 && d > 0.0) {
     vec3 fogc = waterColor(d);
     t.rgb = mix(t.rgb, fogc * t.a, uFog);
