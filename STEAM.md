@@ -16,7 +16,7 @@ Steamworks（実績・オーバーレイ）は `steamworks.js` で組み込み�
 | 場所 | 内容 |
 |---|---|
 | `steam/app_build.vdf` | `AppID` を発行された App ID に |
-| `steam/depot_windows.vdf` / `depot_linux.vdf` | `DepotID` を Steamworks で作成した Depot ID に（app_build.vdf の Depots も同じ値に） |
+| `steam/depot_windows.vdf` / `depot_linux.vdf` / `depot_mac.vdf` | `DepotID` を Steamworks で作成した Depot ID に（app_build.vdf の Depots も同じ値に） |
 | `steam_appid.txt` | 開発中の動作確認用。いまは Steam のテスト用 App（480 = Spacewar）。自分の App ID に変えると、Steam クライアントを起動した状態で `npm start` したときに自分のゲームとして認識されます。**製品ビルドには含めません**（package.json の build.files で除外済み） |
 | `package.json` の `build.appId` | `com.example.mio` を自分のドメインに |
 | `web/src/i18n.js` の `credits` | クレジット表記（制作者名・スタジオ名） |
@@ -81,6 +81,8 @@ npm run dist:win      # → dist/win-unpacked/
 npm run dist:linux    # → dist/linux-unpacked/
 ```
 
+Mac 版（`dist/mac-universal/`）は下の「Mac 版」の手順で作ります。
+
 1. Steamworks SDK をダウンロードし、`tools/ContentBuilder/` の SteamCMD を使います。
 2. `steam/*.vdf` の ID を差し替え、ContentBuilder から
    `steamcmd +login <ビルド用アカウント> +run_app_build <このリポジトリ>/steam/app_build.vdf +quit`
@@ -88,6 +90,7 @@ npm run dist:linux    # → dist/linux-unpacked/
 4. 「インストール」→「一般」で起動オプションを設定:
    - Windows: 実行ファイル `MIO - Hymn of the Blue.exe`
    - Linux（Steam Deck）: 実行ファイル `mio`
+   - macOS: 実行ファイル `MIO - Hymn of the Blue.app`
 5. ストアページとビルドの審査を申請（それぞれ数営業日かかります）。
 
 ### Steam クラウド（任意）
@@ -96,8 +99,59 @@ npm run dist:linux    # → dist/linux-unpacked/
 
 - Windows: `%APPDATA%/mio-hymn-of-the-blue/Local Storage/`
 - Linux: `~/.config/mio-hymn-of-the-blue/Local Storage/`
+- macOS: `~/Library/Application Support/mio-hymn-of-the-blue/Local Storage/`
 
 ### Steam Deck
 
 ゲームパッド操作・1280×800 表示に対応しています。Deck 互換性の審査に出す前に、実機で
 文字の読みやすさ（ダイアログは画面高さ基準で拡大縮小）とフレームレート（画質「中」推奨）を確認してください。
+
+## 7. Mac 版
+
+Intel と Apple Silicon の両方で動く「ユニバーサル版」を作ります。Mac 版は Apple の**署名と公証**がないと
+利用者の Mac で開けないため、次の準備が必要です。
+
+### 準備するもの
+
+1. [Apple Developer Program](https://developer.apple.com/programs/) に登録（年 99 米ドル）。
+2. 「Developer ID Application」証明書を作成し、Mac のキーチェーンから `.p12` 形式で書き出す（パスワードを付ける）。
+   Mac が手元にない場合は、Apple Developer サイトで証明書署名要求（CSR）を作る手順が必要になるので、そのときは相談してください。
+3. 公証用に、Apple ID の「App 用パスワード」を [appleid.apple.com](https://appleid.apple.com/) で発行。
+4. Team ID（10桁）を Apple Developer の「メンバーシップ」画面で確認。
+
+### GitHub Actions でビルドする（Mac がなくてもよい）
+
+`.github/workflows/build-mac.yml` が GitHub の Mac 環境でビルド・署名・公証まで行います。
+リポジトリの Settings → Secrets and variables → Actions に次を登録してください。
+
+| Secret 名 | 内容 |
+|---|---|
+| `MAC_CERT_P12_BASE64` | `.p12` を base64 にしたもの（Mac なら `base64 -i cert.p12 \| pbcopy`） |
+| `MAC_CERT_PASSWORD` | `.p12` のパスワード |
+| `APPLE_ID` | 公証に使う Apple ID のメールアドレス |
+| `APPLE_APP_SPECIFIC_PASSWORD` | 上で発行した App 用パスワード |
+| `APPLE_TEAM_ID` | Team ID |
+
+Actions タブの「Build macOS」→「Run workflow」で実行するか、`v1.0.0` のようなタグを push すると動きます。
+完成品は実行結果ページの Artifacts（`mio-mac-universal.zip`）からダウンロードできます。
+これを展開した `MIO - Hymn of the Blue.app` を `dist/mac-universal/` に置いて SteamPipe でアップロードします。
+
+- Secrets を登録する前でも実行でき、その場合は**署名なしのテスト版**ができます。
+  自分の Mac で試すときは、展開後にターミナルで次を実行すると開けます（販売用には使えません）:
+  `xattr -cr "MIO - Hymn of the Blue.app" && codesign --force --deep -s - "MIO - Hymn of the Blue.app"`
+- 非公開リポジトリでは、GitHub Actions の Mac 環境は Linux より多くの無料枠を消費します（1分あたり10倍換算）。
+
+### 手元の Mac でビルドする
+
+証明書をキーチェーンに入れた状態で、次を実行します。公証用の環境変数があれば公証まで行います。
+
+```bash
+export APPLE_ID=... APPLE_APP_SPECIFIC_PASSWORD=... APPLE_TEAM_ID=...
+npm run dist:mac      # → dist/mac-universal/MIO - Hymn of the Blue.app
+```
+
+### 設定の中身
+
+- `package.json` の `build.mac`: ユニバーサル版、Hardened Runtime、公証、macOS 12 以上。
+- `build/entitlements.mac.plist`: Electron の JavaScript 実行（JIT）と、Steam オーバーレイの読み込みに必要な例外。
+- `x64ArchFiles`: Steam 連携の部品（steamworks.js）は Intel 用・Apple Silicon 用の両方を同梱しているため、統合時にそのまま残す指定。

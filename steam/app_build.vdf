@@ -8,5 +8,6 @@
 	{
 		"0000001" "depot_windows.vdf"
 		"0000002" "depot_linux.vdf"
+		"0000003" "depot_mac.vdf"
 	}
 }

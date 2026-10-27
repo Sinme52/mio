@@ -1,0 +1,10 @@
+"DepotBuild"
+{
+	"DepotID" "0000003"
+	"FileMapping"
+	{
+		"LocalPath" "mac-universal\*"
+		"DepotPath" "."
+		"Recursive" "1"
+	}
+}

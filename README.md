@@ -61,6 +61,7 @@ npm run serve           # ブラウザ版: http://localhost:8080/
 ```bash
 npm run dist:win        # dist/win-unpacked/
 npm run dist:linux      # dist/linux-unpacked/（Steam Deck のネイティブ版にも使える）
+npm run dist:mac        # dist/mac-universal/（macOS 上でのみ。Mac がなければ GitHub Actions で。STEAM.md 参照）
 ```
 
 ## フォルダ構成

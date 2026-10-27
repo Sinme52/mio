@@ -1,0 +1,71 @@
+# Builds the macOS version (Intel + Apple Silicon universal app) on a GitHub-hosted Mac.
+# Signing and notarization run only when the secrets below are set; without them you get an
+# unsigned build for testing (see STEAM.md for how to open it).
+#
+# Secrets (Settings > Secrets and variables > Actions):
+#   MAC_CERT_P12_BASE64          Developer ID Application certificate (.p12), base64-encoded
+#   MAC_CERT_PASSWORD            Password of that .p12
+#   APPLE_ID                     Apple ID e-mail used for notarization
+#   APPLE_APP_SPECIFIC_PASSWORD  App-specific password for that Apple ID
+#   APPLE_TEAM_ID                10-character Team ID
+name: Build macOS
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+jobs:
+  mac:
+    runs-on: macos-15
+    timeout-minutes: 60
+    env:
+      HAS_CERT: ${{ secrets.MAC_CERT_P12_BASE64 != '' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # electron-builder treats an empty variable as "set", so only export what is configured.
+      - name: Build (signed and notarized when secrets are set)
+        run: |
+          if [ "$HAS_CERT" = "true" ]; then
+            export CSC_LINK="$MAC_CERT_P12_BASE64" CSC_KEY_PASSWORD="$MAC_CERT_PASSWORD"
+          else
+            echo "::warning::No signing certificate configured; building an unsigned app for testing."
+            export CSC_IDENTITY_AUTO_DISCOVERY=false
+          fi
+          if [ -n "$NOTARY_APPLE_ID" ]; then
+            export APPLE_ID="$NOTARY_APPLE_ID" APPLE_APP_SPECIFIC_PASSWORD="$NOTARY_PASSWORD" APPLE_TEAM_ID="$NOTARY_TEAM_ID"
+          fi
+          npm run dist:mac
+        env:
+          MAC_CERT_P12_BASE64: ${{ secrets.MAC_CERT_P12_BASE64 }}
+          MAC_CERT_PASSWORD: ${{ secrets.MAC_CERT_PASSWORD }}
+          NOTARY_APPLE_ID: ${{ secrets.APPLE_ID }}
+          NOTARY_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          NOTARY_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+
+      - name: Check both architectures are present
+        run: lipo -archs "dist/mac-universal/MIO - Hymn of the Blue.app/Contents/MacOS/MIO - Hymn of the Blue"
+
+      - name: Check signature and Gatekeeper
+        if: env.HAS_CERT == 'true'
+        run: |
+          APP="dist/mac-universal/MIO - Hymn of the Blue.app"
+          codesign --verify --deep --strict --verbose=2 "$APP"
+          spctl --assess --type execute --verbose "$APP"
+
+      - name: Zip the app
+        run: ditto -c -k --keepParent "dist/mac-universal/MIO - Hymn of the Blue.app" mio-mac-universal.zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mio-mac-universal
+          path: mio-mac-universal.zip
+          retention-days: 14
